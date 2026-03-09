@@ -1,7 +1,11 @@
-export function Header() {
+type HeaderProps = {
+  title: string;
+};
+
+export function Header({ title }: HeaderProps) {
   return (
     <header className="flex h-20 items-center justify-between px-6 lg:px-10">
-      <p className="text-xl font-black">积分活</p>
+      <p className="text-xl font-black">{title}</p>
       <div className="flex items-center gap-3 text-xl text-slate-600">
         <button
           type="button"

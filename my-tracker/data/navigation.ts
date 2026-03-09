@@ -1,1 +1,11 @@
-export const sidebarItems = ["积分活", "记录", "年度汇总", "设置"];
+export type SidebarItem = {
+  label: string;
+  href: string;
+};
+
+export const sidebarItems: SidebarItem[] = [
+  { label: "首页", href: "/" },
+  { label: "积分活", href: "/points" },
+  { label: "记录", href: "/records" },
+  { label: "设置", href: "/settings" },
+];
