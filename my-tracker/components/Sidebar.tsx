@@ -18,15 +18,15 @@ export function Sidebar({ items }: SidebarProps) {
       </div>
       <nav className="space-y-1 px-4">
         {items.map((item) => {
-          const active = pathname === item.href;
+          const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
               key={item.href}
               href={item.href}
-            className={`block rounded-lg px-3 py-2 text-xl font-semibold ${
+              className={`block rounded-lg px-3 py-2 text-xl font-semibold ${
                 active ? "text-[#35c8c8]" : "text-[#2d3135] hover:bg-[#efefef]"
-            }`}
-          >
+              }`}
+            >
               {item.label}
             </Link>
           );

@@ -6,6 +6,7 @@ export type SidebarItem = {
 export const sidebarItems: SidebarItem[] = [
   { label: "首页", href: "/" },
   { label: "积分活", href: "/points" },
+  { label: "计划", href: "/plans" },
   { label: "记录", href: "/records" },
   { label: "设置", href: "/settings" },
 ];
