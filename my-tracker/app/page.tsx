@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type PointProgram = "PayPay" | "d POINT" | "Ponta" | "Rakuten Point" | "WAON POINT";
+type PointProgram = "PayPay" | "d POINT";
 
 type PointRecord = {
   id: string;
@@ -16,6 +16,9 @@ type PointRecord = {
   endYear?: number;
   memo?: string;
 };
+
+const sidebarItems = ["菜单 A", "菜单 B", "菜单 C", "菜单 D"];
+const headerItems = ["导航 1", "导航 2", "导航 3", "导航 4"];
 
 const pointRecords: PointRecord[] = [
   {
@@ -58,9 +61,9 @@ export default function Home() {
 
   const activeRecords = useMemo(
     () =>
-      pointRecords.filter((record) => {
-        return selectedYear >= record.startYear && selectedYear <= (record.endYear ?? 9999);
-      }),
+      pointRecords.filter(
+        (record) => selectedYear >= record.startYear && selectedYear <= (record.endYear ?? 9999),
+      ),
     [selectedYear],
   );
 
@@ -73,81 +76,104 @@ export default function Home() {
     [activeRecords],
   );
 
-  const onlyRecord = activeRecords[0];
-
   return (
-    <div className="min-h-screen bg-slate-100 px-6 py-10 text-slate-900 sm:px-10">
-      <main className="mx-auto max-w-6xl space-y-6">
-        <section className="rounded-3xl bg-gradient-to-r from-sky-700 via-cyan-700 to-teal-700 p-8 text-white shadow-lg">
-          <p className="text-sm tracking-wide text-cyan-100">Point Dashboard</p>
-          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">积分年度仪表盘</h1>
-          <p className="mt-3 max-w-2xl text-cyan-100">
-            按年度统计 PayPay、d POINT 等积分规则，自动折算全年可得积分。
-          </p>
-        </section>
+    <div className="min-h-screen bg-[#f3f4f4] text-[#1d2023]">
+      <div className="border-t-4 border-t-[#38c7c8]" />
+      <div className="flex min-h-[calc(100vh-4px)]">
+        <aside className="hidden w-[250px] border-r border-[#ececec] bg-[#f7f7f7] lg:block">
+          <div className="px-6 pb-8 pt-5">
+            <p className="text-3xl font-black tracking-tight">My Tracker</p>
+          </div>
+          <nav className="space-y-1 px-4">
+            {sidebarItems.map((item, index) => (
+              <a
+                key={item}
+                href="#"
+                className={`block rounded-lg px-3 py-2 text-xl font-semibold ${
+                  index === 0 ? "text-[#35c8c8]" : "text-[#2d3135] hover:bg-[#efefef]"
+                }`}
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+        </aside>
 
-        <section className="rounded-2xl bg-white p-6 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-slate-600">
-            <h2 className="text-xl font-semibold text-slate-800">筛选</h2>
-            <div className="flex flex-wrap gap-3">
-              <label className="flex items-center gap-2">
-                年份
-                <select
-                  value={selectedYear}
-                  onChange={(event) => setSelectedYear(Number(event.target.value))}
-                  className="rounded-lg border border-slate-300 px-3 py-2 text-slate-800 outline-none ring-cyan-500 focus:ring-2"
+        <div className="flex flex-1 flex-col">
+          <header className="flex h-20 items-center justify-between px-6 lg:px-10">
+            <p className="text-xl font-black lg:hidden">My Tracker</p>
+            <nav className="mx-auto hidden items-center gap-10 lg:flex">
+              {headerItems.map((item, index) => (
+                <a
+                  key={item}
+                  href="#"
+                  className={`pb-2 text-xl font-bold ${
+                    index === 0
+                      ? "border-b-2 border-b-[#35c8c8] text-[#23272b]"
+                      : "text-[#23272b] hover:text-black"
+                  }`}
                 >
-                  {availableYears.map((year) => (
-                    <option key={year} value={year}>
-                      {year} 年
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          </div>
+                  {item}
+                </a>
+              ))}
+            </nav>
+            <div className="text-xl">☰</div>
+          </header>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <article className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm text-slate-500">年度总积分</p>
-              <p className="mt-2 text-3xl font-bold text-slate-900">{formatNumber(totalAnnualPoints)}</p>
-            </article>
-            <article className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm text-slate-500">活跃记录数</p>
-              <p className="mt-2 text-3xl font-bold text-emerald-600">{activeRecords.length}</p>
-            </article>
-            <article className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm text-slate-500">积分类型</p>
-              <p className="mt-2 text-3xl font-bold text-cyan-700">
-                {onlyRecord ? onlyRecord.program : "-"}
-              </p>
-            </article>
-          </div>
-        </section>
+          <main className="space-y-6 px-6 pb-8 lg:px-10">
+            <section className="rounded-2xl border border-[#e8e8e8] bg-white p-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h1 className="text-2xl font-bold">积分统计</h1>
+                <label className="flex items-center gap-2 text-sm text-slate-600">
+                  年份
+                  <select
+                    value={selectedYear}
+                    onChange={(event) => setSelectedYear(Number(event.target.value))}
+                    className="rounded-lg border border-slate-300 px-3 py-2 text-slate-800"
+                  >
+                    {availableYears.map((year) => (
+                      <option key={year} value={year}>
+                        {year} 年
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
 
-        <section className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-800">记录明细（每年固定积分）</h2>
-            <div className="mt-4 overflow-x-auto">
-              <table className="w-full min-w-[720px] text-left text-sm">
-                <thead className="border-b border-slate-200 text-slate-500">
-                  <tr>
-                    <th className="py-3 pr-4 font-medium">记录</th>
-                    <th className="py-3 pr-4 font-medium">积分类型</th>
-                    <th className="py-3 pr-4 font-medium">规则</th>
-                    <th className="py-3 pr-4 font-medium">每年固定积分</th>
-                    <th className="py-3 pr-4 font-medium">计入统计</th>
-                    <th className="py-3 pr-4 font-medium">是否领取</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {activeRecords.length === 0 ? (
+              <div className="mt-5 grid gap-4 sm:grid-cols-3">
+                <article className="rounded-xl bg-[#f7f8f8] p-4">
+                  <p className="text-sm text-slate-500">年度总积分（已领取）</p>
+                  <p className="mt-2 text-3xl font-black">{formatNumber(totalAnnualPoints)}</p>
+                </article>
+                <article className="rounded-xl bg-[#f7f8f8] p-4">
+                  <p className="text-sm text-slate-500">记录数</p>
+                  <p className="mt-2 text-3xl font-black">{activeRecords.length}</p>
+                </article>
+                <article className="rounded-xl bg-[#f7f8f8] p-4">
+                  <p className="text-sm text-slate-500">未领取记录</p>
+                  <p className="mt-2 text-3xl font-black">
+                    {activeRecords.filter((record) => !record.claimed).length}
+                  </p>
+                </article>
+              </div>
+            </section>
+
+            <section className="rounded-2xl border border-[#e8e8e8] bg-white p-6">
+              <h2 className="text-xl font-semibold">记录明细（每年固定积分）</h2>
+              <div className="mt-4 overflow-x-auto">
+                <table className="w-full min-w-[760px] text-left text-sm">
+                  <thead className="border-b border-slate-200 text-slate-500">
                     <tr>
-                      <td colSpan={7} className="py-6 text-center text-slate-500">
-                        该筛选条件下没有记录
-                      </td>
+                      <th className="py-3 pr-4 font-medium">记录</th>
+                      <th className="py-3 pr-4 font-medium">积分类型</th>
+                      <th className="py-3 pr-4 font-medium">规则</th>
+                      <th className="py-3 pr-4 font-medium">每年固定积分</th>
+                      <th className="py-3 pr-4 font-medium">计入统计</th>
+                      <th className="py-3 pr-4 font-medium">是否领取</th>
                     </tr>
-                  ) : (
-                    activeRecords.map((record) => (
+                  </thead>
+                  <tbody>
+                    {activeRecords.map((record) => (
                       <tr key={record.id} className="border-b border-slate-100 align-top">
                         <td className="py-4 pr-4">
                           <p className="font-medium text-slate-800">{record.title}</p>
@@ -155,9 +181,7 @@ export default function Home() {
                         </td>
                         <td className="py-4 pr-4">{record.program}</td>
                         <td className="py-4 pr-4">{record.rule}</td>
-                        <td className="py-4 pr-4">
-                          {record.pointsDisplay ?? formatNumber(record.yearlyFixedPoints)}
-                        </td>
+                        <td className="py-4 pr-4">{record.pointsDisplay ?? formatNumber(record.yearlyFixedPoints)}</td>
                         <td className="py-4 pr-4 font-semibold text-slate-900">
                           {record.claimed ? formatNumber(record.yearlyFixedPoints) : "0"}
                         </td>
@@ -173,13 +197,14 @@ export default function Home() {
                           </span>
                         </td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-        </section>
-      </main>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
     </div>
   );
 }
